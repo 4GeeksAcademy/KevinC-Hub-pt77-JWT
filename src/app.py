@@ -10,6 +10,7 @@ from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_jwt_extended import JWTManager
 
 # from models import Person
 
@@ -39,6 +40,13 @@ setup_commands(app)
 
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
+
+# JWT
+app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET")
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = 7 * 24 * 60 * 52
+jwt = JWTManager(app)
+
+
 
 # Handle/serialize errors like a JSON object
 
